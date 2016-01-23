@@ -21,7 +21,7 @@ public class Item implements Serializable {
     @NotNull
     @Column(nullable = false)
     private String name;
-   
+
     @NotNull
     @Column(nullable = false)
     private String description;
@@ -29,6 +29,12 @@ public class Item implements Serializable {
     private String imagePath;
 
     public Item() {
+    }
+
+    public Item(String name, String description, String imagePath) {
+        this.name = name;
+        this.description = description;
+        this.imagePath = imagePath;
     }
 
     public Long getId() {

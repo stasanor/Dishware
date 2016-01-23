@@ -10,7 +10,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.List;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -36,7 +35,6 @@ public class PurchaseOrder implements Serializable {
     private Date creationDate;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn
     @OrderBy("name")
     private List<Item> items;
 
