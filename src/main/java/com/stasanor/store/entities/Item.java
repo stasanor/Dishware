@@ -5,6 +5,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -12,7 +14,11 @@ import javax.validation.constraints.NotNull;
  * @author Mark Sahady
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = Item.FIND_BY_NAME, query = "select i from Item i where i.name = :name")})
 public class Item implements Serializable {
+
+    public static final String FIND_BY_NAME = "Item.findByName";
 
     @Id
     @GeneratedValue
@@ -23,10 +29,14 @@ public class Item implements Serializable {
     private String name;
 
     @NotNull
-    @Column(nullable = false)
+    @Column(length = 2000, nullable = false)
     private String description;
 
     private String imagePath;
+
+    private long onHandQuantity;
+
+    private long pendingQuantity;
 
     public Item() {
     }
@@ -63,5 +73,49 @@ public class Item implements Serializable {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    /**
+     * @return the onHandQuantity
+     */
+    public long getOnHandQuantity() {
+        return onHandQuantity;
+    }
+
+    /**
+     * @param onHandQuantity the onHandQuantity to set
+     */
+    public void setOnHandQuantity(long onHandQuantity) {
+        this.onHandQuantity = onHandQuantity;
+    }
+
+    /**
+     * @return the pendingQuantity
+     */
+    public long getPendingQuantity() {
+        return pendingQuantity;
+    }
+
+    /**
+     * @param pendingQuantity the pendingQuantity to set
+     */
+    public void setPendingQuantity(long pendingQuantity) {
+        this.pendingQuantity = pendingQuantity;
+    }
+
+    public long getAvailableQuantity() {
+        return onHandQuantity - pendingQuantity;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Item=[");
+        sb.append("id=").append(id).append(", ");
+        sb.append("name=").append(name).append(", ");
+        sb.append("description=").append(description).append(", ");
+        sb.append("imagePath=").append(imagePath).append(", ");
+        sb.append("onHandQuantity=").append(onHandQuantity).append(", ");
+        sb.append("pendingQuantity=").append(pendingQuantity).append("]");
+        return sb.toString();
     }
 }

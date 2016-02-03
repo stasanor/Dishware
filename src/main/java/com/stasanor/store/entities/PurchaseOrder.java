@@ -35,11 +35,11 @@ public class PurchaseOrder implements Serializable {
     private Date creationDate;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @OrderBy("name")
-    private List<Item> items;
+    @OrderBy("item.name")
+    private List<LineItem> lineItems;
 
     public PurchaseOrder() {
-        items = new ArrayList<>();
+        lineItems = new ArrayList<>();
     }
 
     /**
@@ -78,17 +78,26 @@ public class PurchaseOrder implements Serializable {
     }
 
     /**
-     * @return the items
+     * @return the lineItems
      */
-    public List<Item> getItems() {
-        return items;
+    public List<LineItem> getLineItems() {
+        return lineItems;
     }
 
     /**
-     * @param items the items to set
+     * @param lineItems the lineItems to set
      */
-    public void setItems(List<Item> items) {
-        this.items = items;
+    public void setLineItems(List<LineItem> lineItems) {
+        this.lineItems = lineItems;
     }
-
+    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("PurchaseOrder=[");
+        sb.append("id=").append(id).append(", ");
+        sb.append("userAccount=").append(userAccount).append(", ");
+        sb.append("creationDate").append(creationDate).append(", ");
+        sb.append("lineItems=").append(lineItems).append("]");
+        return sb.toString();
+    }
 }

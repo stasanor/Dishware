@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -39,6 +41,17 @@ public class UserAccount implements Serializable {
     private Date creationDate;
 
     public UserAccount() {
+    }
+
+    public UserAccount(String firstName, String lastName, String emailAddress) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailAddress = emailAddress;
+    }
+
+    @PrePersist
+    private void setCreationDate() {
+        this.creationDate = new Date();
     }
 
     public Long getId() {
@@ -75,5 +88,16 @@ public class UserAccount implements Serializable {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("UserAccount=[");
+        sb.append("id=").append(id).append(", ");
+        sb.append("firstName=").append(firstName).append(", ");
+        sb.append("lastName=").append(lastName).append(", ");
+        sb.append("emailAddress=").append(emailAddress).append(", ");
+        sb.append("creationDate=").append(creationDate).append("]");
+        return sb.toString();
     }
 }
