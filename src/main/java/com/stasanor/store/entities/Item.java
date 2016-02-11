@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -15,17 +16,25 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = Item.FIND_BY_NAME, query = "select i from Item i where i.name = :name")})
+    @NamedQuery(name = Item.FIND_BY_NAME, query = "select i from Item i where i.name = :name"),
+    @NamedQuery(name = Item.FIND_ALL, query = "select  i from Item i"),
+    @NamedQuery(name = Item.FIND_ALL_SIZE, query = "select count(i) from Item i")
+})
 public class Item implements Serializable {
 
     public static final String FIND_BY_NAME = "Item.findByName";
+    public static final String FIND_ALL = "Item.findAll";
+    public static final String FIND_ALL_SIZE = "Item.findAllSize";
 
     @Id
     @GeneratedValue
     private Long id;
 
+    @Version
+    private Integer version;
+
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @NotNull

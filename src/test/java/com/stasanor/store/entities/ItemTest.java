@@ -1,5 +1,8 @@
 package com.stasanor.store.entities;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
 import javax.validation.ConstraintViolationException;
 import static junit.framework.Assert.assertEquals;
@@ -11,7 +14,7 @@ import org.junit.Test;
  * @author Mark Sahady
  */
 public class ItemTest extends BaseTest {
-
+    
     @Test
     public void testCreateItem() {
         Item item = new Item("name", "description", "");
@@ -44,6 +47,17 @@ public class ItemTest extends BaseTest {
     public void testFindByName() {
         TypedQuery<Item> query = em.createNamedQuery(Item.FIND_BY_NAME, Item.class).setParameter("name", "Item1");
         Item item = query.getSingleResult();
-        assertNotNull("Item1 not found",item);
+        assertNotNull("Item1 not found", item);
+    }
+
+    @Test(expected = PersistenceException.class)
+    public void testDuplicateNames() {
+        Item i1 = new Item("a1", "", "");
+        Item i2 = new Item("a1", "", "");
+
+        tx.begin();
+        em.persist(i1);
+        em.persist(i2);
+        tx.commit();
     }
 }
